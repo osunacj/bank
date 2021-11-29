@@ -1,13 +1,16 @@
-import Card from "./context";
+import Card from "react-bootstrap/Card";
 function Home() {
   return (
-    <Card
-      txtcolor="black"
-      header="BadBank Landing Module"
-      title="Welcome to the bank"
-      text="You can move around using the navigation bar."
-      body={<img src="bank.png" className="img-fluid" alt="Responsive" />}
-    />
+    <Card>
+      <Card.Img variant="top" src="./bank.png" />
+      <Card.Body>
+        <Card.Title>Card Title</Card.Title>
+        <Card.Text>
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </Card.Text>
+      </Card.Body>
+    </Card>
   );
 }
 
