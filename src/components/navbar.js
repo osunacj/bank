@@ -35,18 +35,6 @@ function NavBar() {
             </li>
             <li className="nav-item">
               <a
-                className={`nav-link ${id === 1 ? "active" : ""} `}
-                data-bs-toggle="tooltip"
-                data-bs-placement="bottom"
-                title="Login Page"
-                href="#/login/"
-                onClick={() => setId(1)}
-              >
-                Login
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
                 className={`nav-link ${id === 2 ? "active" : ""} `}
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"

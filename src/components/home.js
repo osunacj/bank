@@ -3,18 +3,12 @@ import React from "react";
 
 function Home() {
   return (
-    <>
-      <div className="rounded bg-light p-2">
-        <h2 className="text-center ">{`Welcome back`}</h2>
-      </div>
-      <br />
-      <Card className="bg-light border-0">
-        <Card.Body>
-          <Card.Title>Card Title</Card.Title>
-          <Card.Text>This is the Home page for your Bank.</Card.Text>
-        </Card.Body>
-      </Card>
-    </>
+    <Card className="bg-light border-0">
+      <Card.Body>
+        <Card.Title>Home Page</Card.Title>
+        <Card.Text>Welcome back.</Card.Text>
+      </Card.Body>
+    </Card>
   );
 }
 

@@ -6,7 +6,6 @@ import NavBar from "./navbar";
 import Balance from "./balance";
 import Deposit from "./deposit";
 import CreateAccount from "./createaccount";
-import Login from "./login";
 import Withdraw from "./withdraw";
 
 // import AllData from "./components/alldata";
@@ -32,8 +31,7 @@ function App() {
         <div className="container" style={{ padding: "20px" }}>
           <Routes>
             <Route path="/" exact element={<Home />} />
-            <Route path="/CreateAccount/" element={<CreateAccount />} />
-            <Route path="/login/" element={<Login />} />
+            <Route path="/CreateAccount/" element={<CreateAccount />} />s
             <Route path="/deposit/" element={<Deposit />} />
             <Route path="/withdraw/" element={<Withdraw />} />
             <Route path="/balance/" element={<Balance />} />
