@@ -1,9 +1,11 @@
 import Card from "react-bootstrap/Card";
+import React from "react";
+
 function Home() {
   return (
     <>
       <div className="rounded bg-light p-2">
-        <h2 className="text-center ">Welcome to your Bank</h2>
+        <h2 className="text-center ">{`Welcome back`}</h2>
       </div>
       <br />
       <Card className="bg-light border-0">
