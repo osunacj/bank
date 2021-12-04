@@ -7,7 +7,12 @@ function Home() {
       <Card.Body>
         <Card.Title>Home Page</Card.Title>
         <Card.Text>Welcome back.</Card.Text>
-      </Card.Body>
+      </Card.Body>{" "}
+      <img
+        src="https://902558.smushcdn.com/2161880/wp-content/uploads/2017/05/Fotolia_116981296_Subscription_Monthly_M.jpg?lossy=1&strip=1&webp=1"
+        alt=""
+        style={{ height: 600 }}
+      />
     </Card>
   );
 }
