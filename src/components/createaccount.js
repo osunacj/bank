@@ -11,11 +11,17 @@ function CreateAccount() {
   const ctx = React.useContext(UserContext);
 
   function validate(field, label) {
+    if (password <= 8) {
+      setStatus("Error: Password has to be at least 8 characters");
+      setTimeout(() => setStatus(""), 3000);
+      return false;
+    }
     if (!field) {
       setStatus("Error: " + label);
       setTimeout(() => setStatus(""), 3000);
       return false;
     }
+
     return true;
   }
 

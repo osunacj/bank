@@ -7,8 +7,7 @@ import Balance from "./balance";
 import Deposit from "./deposit";
 import CreateAccount from "./createaccount";
 import Withdraw from "./withdraw";
-
-// import AllData from "./components/alldata";
+import AllData from "./alldata";
 
 export const UserContext = React.createContext(null);
 
@@ -20,8 +19,8 @@ function App() {
         value={{
           users: [
             {
-              name: "Abel",
-              email: "abel@mit.edu",
+              name: "Carlos",
+              email: "carlos.student@mit.com",
               password: "secret",
               balance: 100,
             },
@@ -35,7 +34,7 @@ function App() {
             <Route path="/deposit/" element={<Deposit />} />
             <Route path="/withdraw/" element={<Withdraw />} />
             <Route path="/balance/" element={<Balance />} />
-            {/* <Route path="/alldata/" element={<AllData/>} /> */}
+            <Route path="/alldata/" element={<AllData />} />
           </Routes>
         </div>
       </UserContext.Provider>
