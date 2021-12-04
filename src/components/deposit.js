@@ -6,6 +6,7 @@ function Deposit() {
   const ctx = React.useContext(UserContext);
   const [status, setStatus] = React.useState("");
   const [ammount, setAmmount] = React.useState(0);
+  const [success, setSuccess] = React.useState(false);
 
   function update() {
     ctx.users[0].balance = ctx.users[0].balance + ammount;
@@ -13,6 +14,7 @@ function Deposit() {
     setAmmount(0);
     let inputDeposit = document.getElementById("inputDeposit");
     inputDeposit.value = "";
+    setSuccess(true);
   }
 
   function numberAlert(value) {
@@ -38,32 +40,47 @@ function Deposit() {
     <Card className="bg-light border-0">
       <Card.Body>
         <Card.Title>Deposit</Card.Title>
-        <Card.Text>Please enter the ammount to deposit.</Card.Text>
-        <br />
-        <div className="d-flex justify-content-between px-1">
-          <h5 className="text-danger">{status}</h5>
-          <h5>Current Balance: {ctx.users[0].balance}</h5>
-        </div>
+        {success ? (
+          <div>
+            <h5 className="text-success text-center">Success</h5>
+            <button
+              type="submit"
+              className="btn btn-secondary"
+              onClick={() => setSuccess(false)}
+            >
+              Continue
+            </button>
+          </div>
+        ) : (
+          <>
+            <Card.Text>Please enter the ammount to deposit.</Card.Text>
+            <br />
+            <div className="d-flex justify-content-between px-1">
+              <h5 className="text-danger">{status}</h5>
+              <h5>Current Balance: {ctx.users[0].balance}</h5>
+            </div>
 
-        <input
-          type="number"
-          id="inputDeposit"
-          className="form-control"
-          placeholder="Deposit Ammount"
-          onChange={(e) => {
-            numberAlert(e.currentTarget.value);
-            negativeNumber(e.currentTarget.value);
-          }}
-        ></input>
-        <br />
-        <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={disabled()}
-          onClick={(e) => update()}
-        >
-          Deposit
-        </button>
+            <input
+              type="number"
+              id="inputDeposit"
+              className="form-control"
+              placeholder="Deposit Ammount"
+              onChange={(e) => {
+                numberAlert(e.currentTarget.value);
+                negativeNumber(e.currentTarget.value);
+              }}
+            ></input>
+            <br />
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={disabled()}
+              onClick={(e) => update()}
+            >
+              Deposit
+            </button>
+          </>
+        )}
       </Card.Body>
     </Card>
   );
