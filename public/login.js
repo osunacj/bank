@@ -1,3 +1,21 @@
+function Logout() {
+  function logout() {
+    fetch("/logout")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message);
+        document.getElementById("emailLocation").innerHTML = " ";
+      });
+  }
+  return (
+    <div className="nav-item">
+      <a className="nav-link" title="Logout" href="" onClick={() => logout()}>
+        Logout
+      </a>
+    </div>
+  );
+}
+
 function Login() {
   const [show, setShow] = React.useState(true);
   const [status, setStatus] = React.useState("");
@@ -36,18 +54,39 @@ function LoginMsg(props) {
 function LoginForm(props) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  // const ctx = React.useContext(UserContext);
+  // const [user, setUser] = React.useState("");
 
-  const ctx = React.useContext(UserContext);
-
-  async function handle() {
-    await fetch(`/user/${email}`)
+  function emailLocation() {
+    fetch("/user")
       .then((response) => response.json())
       .then((data) => {
-        if (data[0].password === password) {
-          ctx.users.push(data[0]);
-          props.setShow(false);
+        if (data[0]) {
+          console.log(data);
+          document.getElementById("emailLocation").innerHTML = data[0].email;
+        }
+      })
+      .catch((err) => console.error(err));
+  }
+
+  async function handle() {
+    await fetch("/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email, password: password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // If incorrect credentials
+        console.log(data);
+        if (data.code === 403) {
+          props.setStatus(data.message);
         } else {
-          props.setStatus("Incorrect Crdentials...");
+          emailLocation();
+          props.setStatus("");
+          props.setShow(false);
         }
       })
       .catch((err) => {
