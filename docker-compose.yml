@@ -1,0 +1,25 @@
+services:
+  node:
+    build: .
+    ports:
+      - 3000:3000
+    stdin_open: true
+    container_name: server
+    restart: always
+    networks:
+      - express-mongo
+    expose:
+      - 3000
+    depends_on:
+      - mongo
+
+  mongo:
+    container_name: mongo
+    restart: always
+    image: mongo
+    ports:
+      - 27017:27017
+    networks:
+      - express-mongo
+networks:
+  express-mongo:

@@ -79,7 +79,7 @@ function NavBar() {
         </ul>
         <div className="d-flex flex-row">
           <Logout setId={setId} />
-          <a className="nav-link p-3 " id="emailLocation"></a>
+          <a className="nav-link " id="emailLocation"></a>
         </div>
       </div>
     </nav>

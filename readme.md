@@ -22,6 +22,14 @@ Finally initiate the project running
 npm start
 ```
 
+If you have docker-compose installed just write:
+
+```bash
+docker-compose up
+```
+
+This command will automatically generate the database and start the server.
+
 ## License
 
 Copyright <YEAR> <COPYRIGHT HOLDER>
