@@ -5,6 +5,8 @@ var dal = require("./dal.js");
 
 app.use(express.static("public"));
 app.use(cors());
+app.use(express.json());
+var loggedUser = [];
 
 app.get("/account/create/:name/:email/:password", function (req, res) {
   dal
@@ -28,6 +30,42 @@ app.get("/user/:email", function (req, res) {
     console.log(user);
     res.json(user);
   });
+});
+
+app.get("/logout", function (req, res) {
+  loggedUser = [];
+  console.log("Logged Out");
+  console.log(loggedUser);
+  res.json({ message: "User logged out" });
+});
+
+app.post("/login", function (req, res) {
+  console.log(req.body);
+
+  if (loggedUser.length > 0) {
+    res.json({ message: "You are already logged in", code: 403 });
+    return;
+  }
+
+  let email = req.body.email;
+  let password = req.body.password;
+
+  dal
+    .user(email)
+    .then((users) => {
+      if (users[0].password === password) {
+        loggedUser.push(users[0]);
+        res.json({ code: 200 });
+      } else {
+        res.json({ message: "Invalid Credentials", code: 403 });
+      }
+    })
+    .catch((err) => console.log(err));
+});
+
+app.get("/user", function (req, res) {
+  console.log("Logged In");
+  res.json(loggedUser);
 });
 
 let port = 3000;
