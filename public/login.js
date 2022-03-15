@@ -9,16 +9,14 @@ function Logout(props) {
       });
   }
   return (
-    <div className="nav-item">
-      <a
-        className="nav-link"
-        href="#/home"
-        title="Logout"
-        onClick={() => logout()}
-      >
-        Logout
-      </a>
-    </div>
+    <a
+      className="nav-link"
+      href="#/home"
+      title="Logout"
+      onClick={() => logout()}
+    >
+      Logout
+    </a>
   );
 }
 
