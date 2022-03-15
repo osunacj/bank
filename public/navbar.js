@@ -78,11 +78,8 @@ function NavBar() {
               </a>
             </li>
           </ul>
-          <Logout />
-          <a className="nav-link " id="emailLocation">
-            {" "}
-          </a>
-          ;
+          <Logout setId={setId} />
+          <a className="nav-link " id="emailLocation"></a>
         </div>
       </nav>
     </>

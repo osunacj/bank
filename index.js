@@ -68,6 +68,8 @@ app.get("/user", function (req, res) {
   res.json(loggedUser);
 });
 
+app.get("/balance", function (req, res) {});
+
 let port = 3000;
 app.listen(port);
 console.log("App running on port " + port);

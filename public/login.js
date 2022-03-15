@@ -1,15 +1,21 @@
-function Logout() {
+function Logout(props) {
   function logout() {
     fetch("/logout")
       .then((response) => response.json())
       .then((data) => {
         console.log(data.message);
+        props.setId(7);
         document.getElementById("emailLocation").innerHTML = " ";
       });
   }
   return (
     <div className="nav-item">
-      <a className="nav-link" title="Logout" href="" onClick={() => logout()}>
+      <a
+        className="nav-link"
+        href="#/home"
+        title="Logout"
+        onClick={() => logout()}
+      >
         Logout
       </a>
     </div>
@@ -19,6 +25,18 @@ function Logout() {
 function Login() {
   const [show, setShow] = React.useState(true);
   const [status, setStatus] = React.useState("");
+
+  React.useEffect(() => {
+    fetch("/user")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data[0]) {
+          console.log(data);
+          document.getElementById("emailLocation").innerHTML = data[0].email;
+        }
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <Card
@@ -54,20 +72,6 @@ function LoginMsg(props) {
 function LoginForm(props) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  // const ctx = React.useContext(UserContext);
-  // const [user, setUser] = React.useState("");
-
-  function emailLocation() {
-    fetch("/user")
-      .then((response) => response.json())
-      .then((data) => {
-        if (data[0]) {
-          console.log(data);
-          document.getElementById("emailLocation").innerHTML = data[0].email;
-        }
-      })
-      .catch((err) => console.error(err));
-  }
 
   async function handle() {
     await fetch("/login", {
@@ -84,7 +88,7 @@ function LoginForm(props) {
         if (data.code === 403) {
           props.setStatus(data.message);
         } else {
-          emailLocation();
+          document.getElementById("emailLocation").innerHTML = email;
           props.setStatus("");
           props.setShow(false);
         }
