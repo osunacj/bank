@@ -2,6 +2,7 @@ var express = require("express");
 var app = express();
 var cors = require("cors");
 var dal = require("./dal.js");
+const { all } = require("express/lib/application");
 
 app.use(express.static("public"));
 app.use(cors());
@@ -25,9 +26,7 @@ app.get("/account/all", function (req, res) {
 });
 
 app.get("/user/:email", function (req, res) {
-  console.log(req.params.email);
   dal.user(req.params.email).then((user) => {
-    console.log(user);
     res.json(user);
   });
 });
@@ -35,13 +34,10 @@ app.get("/user/:email", function (req, res) {
 app.get("/logout", function (req, res) {
   loggedUser = [];
   console.log("Logged Out");
-  console.log(loggedUser);
   res.json({ message: "User logged out" });
 });
 
 app.post("/login", function (req, res) {
-  console.log(req.body);
-
   if (loggedUser.length > 0) {
     res.json({ message: "You are already logged in", code: 403 });
     return;
@@ -55,6 +51,7 @@ app.post("/login", function (req, res) {
     .then((users) => {
       if (users[0].password === password) {
         loggedUser.push(users[0]);
+        console.log("Logged In");
         res.json({ code: 200 });
       } else {
         res.json({ message: "Invalid Credentials", code: 403 });
@@ -64,11 +61,82 @@ app.post("/login", function (req, res) {
 });
 
 app.get("/user", function (req, res) {
-  console.log("Logged In");
   res.json(loggedUser);
 });
 
-app.get("/balance", function (req, res) {});
+app.get("/withdraw/:email/:amount", function (req, res) {
+  var currentBalance = 0;
+  var newBalance = 0;
+
+  let isWithdrawPossible = function () {
+    if (Number(req.params.amount) > Number(currentBalance)) {
+      res.json({
+        message: "Cannot withdraw more than current balance.",
+        code: 403,
+      });
+      return false;
+    }
+    return true;
+  };
+
+  if (req.params.email !== loggedUser[0].email) {
+    res.json({ message: "That email is not logged in.", code: 403 });
+  } else {
+    dal
+      .user(req.params.email)
+      .then((user) => {
+        currentBalance = user[0].balance;
+      })
+      .catch((err) => console.log(err));
+
+    if (!isWithdrawPossible()) return;
+
+    newBalance = Nuumber(currentBalance) - Number(req.params.amount);
+    dal
+      .transaction(req.params.email, Number(newBalance))
+      .then(() => {
+        res.json({ message: "Withdraw Successfull, balance " + newBalance });
+      })
+      .catch((err) => console.log(err));
+  }
+});
+
+app.get("/deposit/:email/:amount", function (req, res) {
+  var currentBalance = 0;
+  var newBalance = 0;
+
+  let isDepositPossible = function () {
+    if (Number(req.params.amount) < 0) {
+      res.json({
+        message: "Cannot deposit negative amount",
+        code: 403,
+      });
+      return false;
+    }
+    return true;
+  };
+
+  if (req.params.email !== loggedUser[0].email) {
+    res.json({ message: "That email is not logged in.", code: 403 });
+  } else {
+    dal
+      .user(req.params.email)
+      .then((user) => {
+        currentBalance = user[0].balance;
+      })
+      .catch((err) => console.log(err));
+
+    if (!isDepositPossible()) return;
+
+    newBalance = Number(currentBalance) + Number(req.params.amount);
+    dal
+      .transaction(req.params.email, Number(newBalance))
+      .then(() => {
+        res.json({ message: "Deposit Successfull, balance " + newBalance });
+      })
+      .catch((err) => console.log(err));
+  }
+});
 
 let port = 3000;
 app.listen(port);

@@ -35,9 +35,16 @@ function user(email) {
       .collection("users")
       .find({ email: email })
       .toArray(function (err, docs) {
+        console.log(docs);
         err ? reject(err) : resolve(docs);
       });
   });
 }
 
-module.exports = { create, all, user };
+function transaction(email, newAmount) {
+  return db
+    .collection("users")
+    .updateOne({ email: email }, { $set: { balance: newAmount } });
+}
+
+module.exports = { create, all, user, transaction };
