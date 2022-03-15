@@ -35,20 +35,21 @@ function BalanceMsg(props) {
 
 function BalanceForm(props) {
   const [email, setEmail] = React.useState("");
-  const [balance, setBalance] = React.useState("");
-  const ctx = React.useContext(UserContext);
+  const [balance, setBalance] = React.useState(0);
 
   function handle() {
-    const user = ctx.users.find((user) => user.email === email);
-    if (!user) {
-      props.setStatus("fail!");
-      return;
-    }
+    fetch(`/balance/${email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.code === 403) {
+          props.setStatus(data.message);
+        } else {
+          setBalance(data.balance);
 
-    setBalance(user.balance);
-    console.log(user);
-    props.setStatus("Your balance is: " + user.balance);
-    props.setShow(false);
+          props.setStatus(`Your balance is: ${data.balance}`);
+          props.setShow(false);
+        }
+      });
   }
 
   return (

@@ -9,6 +9,13 @@ app.use(cors());
 app.use(express.json());
 var loggedUser = [];
 
+function checkLoggedIn(response) {
+  if (loggedUser.length < 1) {
+    response.json({ message: "You need to login first.", code: 403 });
+    return true;
+  }
+}
+
 app.get("/account/create/:name/:email/:password", function (req, res) {
   dal
     .create(req.params.name, req.params.email, req.params.password)
@@ -25,9 +32,11 @@ app.get("/account/all", function (req, res) {
   });
 });
 
-app.get("/user/:email", function (req, res) {
+app.get("/balance/:email", function (req, res) {
+  if (checkLoggedIn(res)) return;
+
   dal.user(req.params.email).then((user) => {
-    res.json(user);
+    res.json(user[0]);
   });
 });
 
@@ -68,6 +77,8 @@ app.get("/withdraw/:email/:amount", function (req, res) {
   var currentBalance = 0;
   var newBalance = 0;
 
+  if (checkLoggedIn(res)) return;
+
   let isWithdrawPossible = function () {
     if (Number(req.params.amount) > Number(currentBalance)) {
       res.json({
@@ -87,15 +98,18 @@ app.get("/withdraw/:email/:amount", function (req, res) {
       .then((user) => {
         currentBalance = user[0].balance;
       })
-      .catch((err) => console.log(err));
-
-    if (!isWithdrawPossible()) return;
-
-    newBalance = Nuumber(currentBalance) - Number(req.params.amount);
-    dal
-      .transaction(req.params.email, Number(newBalance))
       .then(() => {
-        res.json({ message: "Withdraw Successfull, balance " + newBalance });
+        if (!isWithdrawPossible()) return;
+
+        newBalance = Number(currentBalance) - Number(req.params.amount);
+        dal
+          .transaction(req.params.email, Number(newBalance))
+          .then(() => {
+            res.json({
+              message: "Withdraw Successfull, balance " + newBalance,
+            });
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   }
@@ -104,6 +118,8 @@ app.get("/withdraw/:email/:amount", function (req, res) {
 app.get("/deposit/:email/:amount", function (req, res) {
   var currentBalance = 0;
   var newBalance = 0;
+
+  if (checkLoggedIn(res)) return;
 
   let isDepositPossible = function () {
     if (Number(req.params.amount) < 0) {
@@ -124,15 +140,16 @@ app.get("/deposit/:email/:amount", function (req, res) {
       .then((user) => {
         currentBalance = user[0].balance;
       })
-      .catch((err) => console.log(err));
-
-    if (!isDepositPossible()) return;
-
-    newBalance = Number(currentBalance) + Number(req.params.amount);
-    dal
-      .transaction(req.params.email, Number(newBalance))
       .then(() => {
-        res.json({ message: "Deposit Successfull, balance " + newBalance });
+        if (!isDepositPossible()) return;
+
+        newBalance = Number(currentBalance) + Number(req.params.amount);
+        dal
+          .transaction(req.params.email, Number(newBalance))
+          .then(() => {
+            res.json({ message: "Deposit Successfull, balance " + newBalance });
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   }

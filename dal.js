@@ -35,7 +35,6 @@ function user(email) {
       .collection("users")
       .find({ email: email })
       .toArray(function (err, docs) {
-        console.log(docs);
         err ? reject(err) : resolve(docs);
       });
   });

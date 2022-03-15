@@ -67,7 +67,7 @@ function NavBar() {
                 Balance
               </a>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a
                 className={`nav-link ${id === 5 ? "active" : ""} `}
                 title="User Data Page"
@@ -76,7 +76,7 @@ function NavBar() {
               >
                 AllData
               </a>
-            </li>
+            </li> */}
           </ul>
           <Logout setId={setId} />
           <a className="nav-link " id="emailLocation"></a>

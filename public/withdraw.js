@@ -36,20 +36,18 @@ function WithdrawMsg(props) {
 function WithdrawForm(props) {
   const [email, setEmail] = React.useState("");
   const [amount, setAmount] = React.useState("");
-  const ctx = React.useContext(UserContext);
 
   function handle() {
-    console.log(email, amount);
-    const user = ctx.users.find((user) => user.email === email);
-    if (!user) {
-      props.setStatus("fail!");
-      return;
-    }
-
-    user.balance = user.balance - Number(amount);
-    console.log(user);
-    props.setStatus("");
-    props.setShow(false);
+    fetch(`/withdraw/${email}/${amount}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.code === 403) {
+          props.setStatus(data.message);
+        } else {
+          props.setStatus(data.message);
+          props.setShow(false);
+        }
+      });
   }
 
   function validate(value) {

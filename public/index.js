@@ -4,7 +4,7 @@ function Spa() {
       <div>
         <UserContext.Provider value={{ users: [] }}>
           <NavBar />
-          <div className="container" style={{ padding: "20px" }}>
+          <div className="d-flex justify-content-center p-5 mt-4">
             <Route path="/" exact component={Home} />
             <Route path="/home" component={Home} />
             <Route path="/createAccount/" component={CreateAccount} />
@@ -13,7 +13,7 @@ function Spa() {
             <Route path="/withdraw" component={Withdraw} />
             {/* <Route path="/transactions/" component={Transactions} /> */}
             <Route path="/balance" component={Balance} />
-            <Route path="/alldata" component={AllData} />
+            {/* <Route path="/alldata" component={AllData} /> */}
           </div>
         </UserContext.Provider>
       </div>
