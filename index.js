@@ -156,5 +156,5 @@ app.get("/deposit/:email/:amount", function (req, res) {
 });
 
 let port = 3000;
-app.listen(port);
+app.listen(process.env.PORT || port);
 console.log("App running on port " + port);
