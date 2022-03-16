@@ -3,9 +3,12 @@ const url = "mongodb://mongo:27017";
 let db = null;
 
 MongoClient.connect(url, { useUnifiedTopology: true }, function (err, client) {
-  console.log("Connected Successfully  to db server");
-
-  db = client.db("myproject");
+  if (err) console.log(err);
+  else {
+    console.log("Connected Successfully  to db server");
+    console.log(url);
+    db = client.db("myproject");
+  }
 });
 
 function create(name, email, password) {
